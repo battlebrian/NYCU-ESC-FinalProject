@@ -20,9 +20,12 @@ def main():
             coordinate.append((float(co[0]) * 100,float(co[1]) * 100))
     f.close()
 
+    last = [coordinate[0][0],coordinate[0][1]]
     for coor in coordinate:
         dis = reverse(coor[0],coor[1])
-        map.add_loca(dis[0],dis[1])
+        dis_last = reverse(last[0],last[1])
+        map.add_loca(dis[0],dis[1],dis_last[0],dis_last[1])
+        last = [coor[0],coor[1]]
     dis = reverse(100,100)
     map.add_obs(dis[0],dis[1])
     dis = reverse(102,105)
