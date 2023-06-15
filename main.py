@@ -1,5 +1,6 @@
 import src.map_gen as mg
 import re
+from src.api import *
 
 #def reverse(a,b):
 #    d = (a ** 2 + b ** 2) ** (1/2)

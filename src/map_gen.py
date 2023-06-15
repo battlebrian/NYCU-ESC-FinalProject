@@ -1,8 +1,7 @@
 import numpy as np
 from PIL import Image
-import math.cos as cos
-import math.sin as sin
-import math.pi as pi
+from math import cos,sin,pi
+
 
 
 MAP_NOT_GET_HERE = [192,192,192]
@@ -31,13 +30,13 @@ class map_gen:
         self.servers_distance = dis
         distance_coor = int(dis / BLOCK_SIZE)
         if distance_coor % 2 == 1:
-            self.server_a_coor = (0,int(distance_coor / 2) + 1)
-            self.server_b_coor = (0,distance_coor + int(distance_coor / 2) + 1)
+            self.server_a_coor = np.mat([[0],[int(distance_coor / 2) + 1]])
+            self.server_b_coor = np.mat([[0],[distance_coor + int(distance_coor / 2) + 1]])
             self.map_length = distance_coor * 2 + 1
             self.map_width = distance_coor * 2 + 1
         else:
-            self.server_a_coor = (0,distance_coor)
-            self.server_b_coor = (0,int(distance_coor/2*3))
+            self.server_a_coor = np.mat([[0],[distance_coor]])
+            self.server_b_coor = np.mat([[0],[int(distance_coor/2*3)]])
             self.map_length = distance_coor * 2
             self.map_width = distance_coor * 2
 
@@ -45,15 +44,15 @@ class map_gen:
         for i in range(self.map_length):
             for j in range(self.map_width):
                 self.map[i][j] = MAP_NOT_GET_HERE
-        self.map[self.server_a_coor[0]][self.server_a_coor[1]] = MAP_GATEWAY_DEVICE
-        self.map[self.server_b_coor[0]][self.server_b_coor[1]] = MAP_GATEWAY_DEVICE
+        self.map[self.server_a_coor[0][0]][self.server_a_coor[1][0]] = MAP_GATEWAY_DEVICE
+        self.map[self.server_b_coor[0][0]][self.server_b_coor[1][0]] = MAP_GATEWAY_DEVICE
 
         back_position_coordination = self.__cal_location(back_dis_pair[0],back_dis_pair[1])
         front_position_coordination = self.__cal_location(front_dis_pair[0],front_dis_pair[1])
 
-        self.car_direction = np.array(front_position_coordination) - np.array(back_position_coordination)
-        self.car_direction = np.mat([self.car_direction[0]/((self.car_direction[0]**2 + self.car_direction[1]**2)**(1/2)),\
-                              self.car_direction[1]/((self.car_direction[0]**2 + self.car_direction[1]**2)**(1/2))])
+        self.car_direction = front_position_coordination - back_position_coordination
+        self.car_direction = np.mat([self.car_direction[0][0]/((self.car_direction[0][0]**2 + self.car_direction[1][0]**2)**(1/2)),\
+                              self.car_direction[1][0]/((self.car_direction[0][0]**2 + self.car_direction[1][0]**2)**(1/2))])
 
 
         self.car_now_coor = None
@@ -200,8 +199,8 @@ class map_gen:
     
     def __get_coordination(self,dis_a:float,dis_b:float) -> np.mat:
         coor = self.__cal_location(dis_a,dis_b)
-        y = int(coor[1]/BLOCK_SIZE) + self.server_a_coor[1]
-        x = int(coor[0]/BLOCK_SIZE) + self.server_a_coor[0]
+        y = int(coor[1][0]/BLOCK_SIZE) + self.server_a_coor[1][0]
+        x = int(coor[0][0]/BLOCK_SIZE) + self.server_a_coor[0][0]
 
         return np.mat([[x],[y]])
 
