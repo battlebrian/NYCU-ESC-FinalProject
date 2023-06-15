@@ -26,7 +26,7 @@ SPEED = 40
 
 class map_gen:
 
-    def __init__(self,dis:float,back_dis_pair:list[float],front_dis_pair:list[float]) -> None:
+    def __init__(self,dis,back_dis_pair,front_dis_pair) -> None:
         self.servers_distance = dis
         distance_coor = int(dis / BLOCK_SIZE)
         if distance_coor % 2 == 1:
