@@ -198,7 +198,7 @@ class map_gen:
         return self.map[coor[0][0]][coor[1][0]] == MAP_NOT_GET_HERE
     
     def __get_coordination(self,dis_a:float,dis_b:float) -> np.mat:
-        coor = self.__cal_location(dis_a,dis_b)
+        coor = self.__cal_location(dis_a*100,dis_b*100)
         y = int(coor[1][0]/BLOCK_SIZE) + self.server_a_coor[1][0]
         x = int(coor[0][0]/BLOCK_SIZE) + self.server_a_coor[0][0]
 
