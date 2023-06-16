@@ -2,6 +2,23 @@ import src.map_gen as mg
 import re
 from src.api import *
 
+import blescan    #required blescan.py file
+import math
+import sys
+import bluetooth._bluetooth as bluez
+
+def init_ble():    #if main function need clearer, can move into blescan.py
+    try:
+        # open hci0 interface
+        sock = bluez.hci_open_dev(0)+-
+        print ("ble thread started")
+    except:
+        print ("error accessing bluetooth device...")
+        sys.exit(1)
+    blescan.hci_le_set_scan_parameters(sock)    # set scan params
+    blescan.hci_enable_le_scan(sock)            # start scanning
+    return sock
+
 #def reverse(a,b):
 #    d = (a ** 2 + b ** 2) ** (1/2)
 #    e = ((500 - b) ** 2 + a ** 2 ) ** (1/2)
@@ -72,17 +89,18 @@ def dfs(map:mg.map_gen):
     
 
 def main():
+    sock = init_ble()
     dis = getServersDistance()
 
     
     if not faceObstacle():
-        back_location = getLocation()
+        back_location = getLocation(sock)
         moveForward(STEP_LENGTH)
-        front_location = getLocation()
+        front_location = getLocation(sock)
     else:
-        front_location = getLocation()
+        front_location = getLocation(sock)
         moveBackward(STEP_LENGTH)
-        back_location = getLocation()
+        back_location = getLocation(sock)
 
     
     map = mg.map_gen(dis,back_location,front_location)
