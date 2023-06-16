@@ -42,4 +42,4 @@ def faceObstacle():
     return dis<1
 
 def getServersDistance():
-    return 10;
+    return 10
